@@ -1,0 +1,50 @@
+﻿@model IEnumerable<DanAutoPower.Models.Car>
+
+@{
+    ViewData["Title"] = "Cars List";
+}
+
+<h1>Cars List</h1>
+
+@if (Model == null || !Model.Any())
+{
+    <p>No cars available. <a href="@Url.Action("Create", "Cars")" class="btn btn-primary">Add New Car</a></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Brand)</th>
+                <th>@Html.DisplayNameFor(model => model.Model)</th>
+                <th>@Html.DisplayNameFor(model => model.Year)</th>
+               
+                <th>@Html.DisplayNameFor(model => model.Price)</th>
+                
+                
+                <th>@Html.DisplayNameFor(model => model.ImageUrl)</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.Brand)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Model)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Year)</td>
+                   
+                    <td>@Html.DisplayFor(modelItem => item.Price)</td>
+                   
+                    
+                    <td>@Html.DisplayFor(modelItem => item.ImageUrl)</td>
+                    <td>
+                        <a class="btn btn-secondary" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

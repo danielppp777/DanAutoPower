@@ -1,0 +1,120 @@
+﻿@model IEnumerable<DanAutoPower.Models.Car> 
+
+@{
+    ViewData["Title"] = "Начална Страница";
+}
+
+<div class="container mt-5">
+    <!-- Заглавие на страницата -->
+    <div class="text-center mb-5">
+        <h1 class="display-4">Добре дошли в DanAutoPower!</h1>
+        <p>Вашето удобно място за търсене на автомобили.</p>
+    </div>
+
+    <!-- ТАБЛИЦА С НАЙ-НОВИТЕ ОБЯВИ ЗА АВТОМОБИЛИ -->
+    <div class="mt-5">
+        <h2 class="text-center">Най-новите обяви за автомобили</h2>
+        <table class="table table-bordered table-striped mt-4">
+            <thead>
+                <tr>
+                    <th>Марка</th>
+                    <th>Модел</th>
+                    <th>Година</th>
+                    <th>Цена</th>
+                    <th>Преглед</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var car in Model)
+                {
+                    <tr>
+                        <td>@car.Brand</td>
+                        <td>@car.Model</td>
+                        <td>@car.Year</td>
+                        <td>@car.Price лв</td>
+                        <td><a href="#" class="btn btn-info">Преглед</a></td>
+
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Секция с нови автомобили (Карти с информация) -->
+    <div class="mt-5">
+        <h2 class="text-center">Нови автомобили на пазара</h2>
+        <div class="row text-center">
+            @foreach (var car in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="@car.ImageUrl" class="card-img-top" alt="Car Image">
+                        <div class="card-body">
+                            <h5 class="card-title">@car.Brand @car.Model</h5>
+                            <p class="card-text">@car.Year г., @car.Price лв</p>
+                            <a href="#" class="btn btn-primary">Виж обява</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Бутон за добавяне на нова обява -->
+    <div class="text-center mt-5">
+        <a href="#" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#createCarModal">Добави нова обява</a>
+    </div>
+</div>
+
+<!-- Модално прозорче за добавяне на нов автомобил -->
+<div class="modal fade" id="createCarModal" tabindex="-1" aria-labelledby="createCarModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createCarModalLabel">Добави нов автомобил</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" enctype="multipart/form-data" asp-action="Create">
+                    <div class="mb-3">
+                        <label for="Brand" class="form-label">Марка</label>
+                        <input type="text" class="form-control" id="Brand" name="Brand" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="Model" class="form-label">Модел</label>
+                        <input type="text" class="form-control" id="Model" name="Model" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="Year" class="form-label">Година</label>
+                        <input type="number" class="form-control" id="Year" name="Year" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="Price" class="form-label">Цена</label>
+                        <input type="number" class="form-control" id="Price" name="Price" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="ImageUrl" class="form-label">Изображение</label>
+                        <input type="file" class="form-control" id="ImageUrl" name="ImageUrl">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Запази</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom CSS -->
+<style>
+    /* Карти с автомобили */
+    .card-img-top {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .modal-body form {
+        display: flex;
+        flex-direction: column;
+    }
+</style>

@@ -1,0 +1,40 @@
+<!--
+
+Custom CSS -->
+<style >
+.category-box {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}
+
+.category-box:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.category-box img {
+    max-width: 60px;
+    margin-bottom: 10px;
+}
+
+.category-box h4 {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.category-box p {
+    font-size: 14px;
+    color: #555;
+}
+
+.btn-lg {
+    font-size: 18px;
+    padding: 12px 30px;
+}
+
+</style >
