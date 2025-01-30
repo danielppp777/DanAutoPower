@@ -1,0 +1,18 @@
+﻿@model DanAutoPower.Models.Service
+
+@{
+    ViewData["Title"] = "Детайли за услуга";
+}
+
+<h2>Детайли за услугата</h2>
+
+<div>
+    <h4>Име: @Model.Name</h4>
+    <p><strong>Описание:</strong> @Model.Description</p>
+    <p><strong>Цена:</strong> @Model.Price €</p>
+</div>
+
+<div class="mt-3">
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Редакция</a>
+    <a asp-action="Index" class="btn btn-secondary">Назад</a>
+</div>
