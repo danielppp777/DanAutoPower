@@ -1,56 +1,35 @@
 using DanAutoPower.Data;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using DanAutoPower.Data; // ?? Замени YourNamespace с твоя namespace
+using DanAutoPower.Models; // ?? Добави правилния namespace за ApplicationUser
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+// ?? Конфигуриране на базата данни
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
-builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
-builder.Services.AddControllersWithViews();
-
+// ?? Добавяне на Identity
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
-// Register other services or configurations here, if needed
-// For example, for Areas (if you're using Areas in your project):
-// builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+// ?? Добавяне на контролери и Razor Pages
+builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages(); // Важно за Identity страниците!
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseMigrationsEndPoint();
-}
-else
-{
-    app.UseExceptionHandler("/Home/Error");
-    app.UseHsts(); // HSTS can be set up for production to improve security
-}
-
-app.UseHttpsRedirection();
-app.UseStaticFiles();
-
-app.UseRouting();
-
+// ?? Middleware за аутентикация и авторизация
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapRazorPages();
-
-
-
-// Ensure the default controller route works correctly, and you're also covering possible Area-based routing
+// ?? Зареждане на маршрути
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-app.MapRazorPages(); // Ensure Razor Pages are mapped if you're using them as well
+app.MapRazorPages(); // ?? Това е задължително за Identity UI!
 
 app.Run();
