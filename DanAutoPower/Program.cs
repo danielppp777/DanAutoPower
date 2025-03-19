@@ -14,6 +14,9 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
+    .AddEntityFrameworkStores<ApplicationDbContext>();
+
 // Register other services or configurations here, if needed
 // For example, for Areas (if you're using Areas in your project):
 // builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
@@ -38,6 +41,10 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapRazorPages();
+
+
 
 // Ensure the default controller route works correctly, and you're also covering possible Area-based routing
 app.MapControllerRoute(
