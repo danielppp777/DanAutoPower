@@ -1,18 +1,20 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-
-public class Car
+namespace DanAutoPower.Models
 {
-    public int Id { get; set; }
-    public string Brand { get; set; }
-    public string Model { get; set; }
-    public int Year { get; set; }
-    public decimal Price { get; set; }
-    public string ImageUrl { get; set; }
+    public class Car
+    {
+        public int Id { get; set; }
+        public string Brand { get; set; }
+        public string Model { get; set; }
+        public int Year { get; set; }
+        public decimal Price { get; set; }
+        public string ImageUrl { get; set; }
 
-    // Foreign Key - връзка към User
-    public string UserId { get; set; }
+        // Foreign Key - връзка към User
+        public string UserId { get; set; }
 
-    [ForeignKey("UserId")]
-    public virtual ApplicationUser User { get; set; }
+        [ForeignKey("UserId")]
+        public virtual ApplicationUser User { get; set; }
+    }
+
 }
-
