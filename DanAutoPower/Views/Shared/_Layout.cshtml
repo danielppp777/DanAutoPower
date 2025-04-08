@@ -27,7 +27,6 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Cars" asp-action="Index">Автомобили</a>
-
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Services" asp-action="Index">Services</a>
@@ -39,13 +38,21 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Sale" asp-action="Index">Sales</a>
                         </li>
                     </ul>
+                    
+                    <!-- Login and Register buttons here -->
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </nav>
-
-
-
     </header>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -57,6 +64,7 @@
             &copy; 2024 - DanAutoPower - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
@@ -65,6 +73,5 @@
     <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
     <script src="~/js/DanAutoPower.js"></script>
     <div id="root"></div>
-
 </body>
 </html>
