@@ -2,34 +2,58 @@ using DanAutoPower.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
-using DanAutoPower.Data; // ?? Замени YourNamespace с твоя namespace
-using DanAutoPower.Models; // ?? Добави правилния namespace за ApplicationUser
+using DanAutoPower.Data;
+using DanAutoPower.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ?? Конфигуриране на базата данни
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// ?? Добавяне на Identity
-builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+// Identity
+builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
+{
+    options.SignIn.RequireConfirmedAccount = false;
+})
+.AddRoles<IdentityRole>()
+.AddEntityFrameworkStores<ApplicationDbContext>();
 
-// ?? Добавяне на контролери и Razor Pages
+// Razor Pages
 builder.Services.AddControllersWithViews();
-builder.Services.AddRazorPages(); // Важно за Identity страниците!
-
+builder.Services.AddRazorPages();
 var app = builder.Build();
 
-// ?? Middleware за аутентикация и авторизация
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    await SeedRolesAsync(services);
+}
+
+// Middleware
 app.UseAuthentication();
 app.UseAuthorization();
 
-// ?? Зареждане на маршрути
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-app.MapRazorPages(); // ?? Това е задължително за Identity UI!
+app.MapRazorPages(); // Identity UI
 
 app.Run();
+
+// Role seeding method
+static async Task SeedRolesAsync(IServiceProvider serviceProvider)
+{
+    var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+    string[] roleNames = { "Admin", "User" };
+
+    foreach (var roleName in roleNames)
+    {
+        if (!await roleManager.RoleExistsAsync(roleName))
+        {
+            await roleManager.CreateAsync(new IdentityRole(roleName));
+        }
+    }
+}
+
