@@ -14,11 +14,12 @@ namespace DanAutoPower.Data
 
         public DbSet<Car> Cars { get; set; }
         public DbSet<Service> Services { get; set; }
+        public DbSet<Brand>? Brands { get; set; }
 
 
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //    base.OnModelCreating(modelBuilder);
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
 
         //    modelBuilder.Entity<Car>()
         //        .Property(c => c.Price)
@@ -29,7 +30,10 @@ namespace DanAutoPower.Data
         //        .WithMany()
         //        .HasForeignKey(c => c.UserId)
         //        .OnDelete(DeleteBehavior.Cascade);
-        //}
+        }
+
+
+        public DbSet<Model>? Models { get; set; }
 
     }
 }

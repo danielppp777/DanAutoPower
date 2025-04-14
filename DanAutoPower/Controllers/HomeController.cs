@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using DanAutoPower.Models; // добави това, за да можеш да използваш моделите
 using System.Collections.Generic;
+using SQLitePCL;
 
 namespace DanAutoPower.Controllers
 {
@@ -11,14 +12,14 @@ namespace DanAutoPower.Controllers
 
         {
             // Създаваме примерни данни за автомобили, за да ги покажем в изгледа
-            var cars = new List<Car>
-            { 
-                new Car { Brand = "BMW", Model = "X5", Year = 2022, Price = 55000, ImageUrl = "/images/resizer.jpg " },
-                new Car { Brand = "Mercedes", Model = "GLE", Year = 2021, Price = 65000, ImageUrl = "/images/mercedes_gle.jpg" },
-                new Car { Brand = "Audi", Model = "Q7", Year = 2020, Price = 58000, ImageUrl = "/images/audi_q7.jpg" }
-            };
+            //var cars = new List<Car>
+            //{ 
+            //    new Car { Brand = "BMW", Model = "X5", Year = 2022, Price = 55000, ImageUrl = "/images/resizer.jpg " },
+            //    new Car { Brand = "Mercedes", Model = "GLE", Year = 2021, Price = 65000, ImageUrl = "/images/mercedes_gle.jpg" },
+            //    new Car { Brand = "Audi", Model = "Q7", Year = 2020, Price = 58000, ImageUrl = "/images/audi_q7.jpg" }
+            //};
 
-            return View(cars); // Изпращаме данните към изгледа
+            return View(); // Изпращаме данните към изгледа
         }
 
         // POST: Home/Create

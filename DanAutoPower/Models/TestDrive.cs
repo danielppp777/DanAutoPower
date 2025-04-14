@@ -10,13 +10,7 @@ namespace DanAutoPower.Models
             [Required, ForeignKey("Car")]
             public int CarId { get; set; }
             public Car Car { get; set; }
-            [Required, ForeignKey("Customer")]
-            public int CustomerId { get; set; }
-            public Customer Customer { get; set; }
             public DateTime Date { get; set; }
-            [Required, ForeignKey("Employee")]
-            public int EmployeeId { get; set; }
-            public Employee Employee { get; set; }
         
     }
 
