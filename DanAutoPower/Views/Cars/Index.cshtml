@@ -1,53 +1,64 @@
 ﻿@model IEnumerable<DanAutoPower.Models.Car>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Car Listings";
 }
 
-<h1>Index</h1>
+<h2>Car Listings</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+@if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+{
+    <p>
+        <a asp-action="Create" class="btn btn-success">+ Add New Car</a>
+    </p>
+}
+
+<table class="table table-bordered table-striped">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Model)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.YearOfManifacture)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ImageUrl)
-            </th>
-            <th></th>
+            <th>Марка</th>
+            <th>Модел</th>
+            <th>Вид гориво</th>
+            <th>Година на производство</th>
+            <th>Пробег</th>
+            <th>Цена</th>
+            <th>Снимка</th>
+            <th style="width: 140px;">Действия</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Model.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.YearOfManifacture)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImageUrl)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var car in Model)
+        {
+            <tr>
+                <td>@car.Make</td>
+                <td>@car.Model</td>
+                <td>@car.Fuel</td>
+                <td>@car.Year</td>
+                <td>@car.Mileage km</td>
+                <td>@car.Price.ToString("C")</td>
+                <td>
+                    @if (!string.IsNullOrEmpty(car.ImageUrl))
+                    {
+                        <img src="@car.ImageUrl" style="height: 50px;" />
+                    }
+                    else
+                    {
+                        <span>Няма снимка</span>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@car.Id" class="btn btn-sm btn-info">Детайли</a>
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@car.Id" class="btn btn-sm btn-warning">Редакция</a>
+                    }
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Delete" asp-route-id="@car.Id" class="btn btn-sm btn-danger">Изтрий</a>
+                    }
+                   
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

@@ -1,44 +1,70 @@
 ﻿@model DanAutoPower.Models.Car
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create Car";
 }
 
-<h1>Create</h1>
+<h2>Добави нова обява</h2>
 
-<h4>Car</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="ModelID" class="control-label"></label>
-                <select asp-for="ModelID" class ="form-control" asp-items="ViewBag.ModelID"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="YearOfManifacture" class="control-label"></label>
-                <input asp-for="YearOfManifacture" class="form-control" />
-                <span asp-validation-for="YearOfManifacture" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ImageUrl" class="control-label"></label>
-                <input asp-for="ImageUrl" class="form-control" />
-                <span asp-validation-for="ImageUrl" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+<form asp-action="Create" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="form-group">
+        <label>Марка</label>
+        <select id="makeDropdown" name="Make" class="form-control" required></select>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <div class="form-group">
+        <label asp-for="Model">Модел</label>
+        <input asp-for="Model" class="form-control" />
+        <span asp-validation-for="Model" class="text-danger"></span>
+    </div>
 
+    <div class="form-group">
+        <label>Вид гориво</label>
+        <select id="Fuel" name="Fuel" class="form-control" required>
+            <option value="">Избери гориво</option>
+            <option value="Petrol">Бензинl</option>
+            <option value="Diesel">Дизел</option>
+            <option value="Hybrid">Хибрид</option>
+            <option value="Electric">Ток</option>
+            <option value="LPG">LPG (Втечнен пропан бутан)</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Year">Година на производство</label>
+        <input asp-for="Year" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Mileage">Пробег (км)</label>
+        <input asp-for="Mileage" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Price">Цена (лв)</label>
+        <input asp-for="Price" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ImageUrl"></label>
+        <input asp-for="ImageUrl" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Добави</button>
+</form>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $.get("/api/CarsApi/makes", function (makes) {
+                $('#makeDropdown').append('<option value="">Select Make</option>');
+                makes.forEach(make => {
+                    $('#makeDropdown').append(`<option value="${make.name}">${make.name}</option>`);
+                });
+            });
+        });
+    </script>
+}

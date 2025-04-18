@@ -4,21 +4,12 @@ namespace DanAutoPower.Models
     public class Car
     {
         public int Id { get; set; }
-        //   public string Brand { get; set; }
-
-        public int ModelID { get; set; }
-        public virtual Model? Model { get; set; }
-        public DateOnly YearOfManifacture { get; set; }
-        public decimal Price { get; set; }
-        public string ImageUrl { get; set; }
-
-        public virtual ICollection<Car>? Cars { get; set; }
-
-        //// Foreign Key - връзка към User
-        //public string UserId { get; set; }
-
-        //[ForeignKey("UserId")]
-        //public virtual ApplicationUser User { get; set; }
+        public string Make { get; set; }          // from API
+        public string Model { get; set; }         // from API
+        public string Fuel { get; set; }          // static drodown
+        public int Year { get; set; }             // entered manually
+        public int Mileage { get; set; }          // entered manually
+        public decimal Price { get; set; }        // entered manually
+        public string ImageUrl { get; set; }      // entered manually
     }
-
 }

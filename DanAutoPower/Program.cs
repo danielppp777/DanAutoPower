@@ -10,6 +10,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// Cars API
+builder.Services.AddHttpClient("CarApiClient", client =>
+{
+    client.BaseAddress = new Uri("https://carapi.app/api/");
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
+
 // Identity
 builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
 {

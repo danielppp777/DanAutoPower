@@ -17,6 +17,9 @@
 </div>
 
 <div class="mt-3">
-    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Редакция</a>
+    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+    {
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-sm btn-warning">Редакция</a>
+    }
     <a asp-action="Index" class="btn btn-secondary">Назад</a>
 </div>

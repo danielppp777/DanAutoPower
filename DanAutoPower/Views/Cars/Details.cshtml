@@ -1,42 +1,48 @@
 ﻿@model DanAutoPower.Models.Car
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Car Details";
 }
 
-<h1>Details</h1>
+<h2>Детайли за автомобил</h2>
+<hr />
+
+<dl class="row">
+    <dt class="col-sm-2">Марка</dt>
+    <dd class="col-sm-10">@Model.Make</dd>
+
+    <dt class="col-sm-2">Модел</dt>
+    <dd class="col-sm-10">@Model.Model</dd>
+
+    <dt class="col-sm-2">Вид гориво</dt>
+    <dd class="col-sm-10">@Model.Fuel</dd>
+
+    <dt class="col-sm-2">Година на производство</dt>
+    <dd class="col-sm-10">@Model.Year</dd>
+
+    <dt class="col-sm-2">Пробег</dt>
+    <dd class="col-sm-10">@Model.Mileage км</dd>
+
+    <dt class="col-sm-2">Цена</dt>
+    <dd class="col-sm-10">@Model.Price.ToString("C")</dd>
+
+    <dt class="col-sm-2">Снимка</dt>
+    <dd class="col-sm-10">
+        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+        {
+            <img src="@Model.ImageUrl" alt="Снимка на автомобила" style="max-height: 200px;" />
+        }
+        else
+        {
+            <span>Няма предоставена снимка</span>
+        }
+    </dd>
+</dl>
 
 <div>
-    <h4>Car</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Model)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Model.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.YearOfManifacture)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.YearOfManifacture)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ImageUrl)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ImageUrl)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+    {
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-sm btn-warning">Редактирай</a>
+    }
+    <a asp-action="Index" class="btn btn-secondary">Обратно към списъка</a>
 </div>

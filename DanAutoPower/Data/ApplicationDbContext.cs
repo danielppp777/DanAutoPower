@@ -14,7 +14,6 @@ namespace DanAutoPower.Data
 
         public DbSet<Car> Cars { get; set; }
         public DbSet<Service> Services { get; set; }
-        public DbSet<Brand>? Brands { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -31,9 +30,6 @@ namespace DanAutoPower.Data
         //        .HasForeignKey(c => c.UserId)
         //        .OnDelete(DeleteBehavior.Cascade);
         }
-
-
-        public DbSet<Model>? Models { get; set; }
 
     }
 }

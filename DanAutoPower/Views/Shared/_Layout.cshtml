@@ -35,6 +35,13 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="TestDrive" asp-action="Index">Тест Драйв</a>
                         </li>
+
+                        <li class="nav-item">
+                           @if (User.IsInRole("Admin"))
+                           {
+                               <a class="nav-link text-dark" asp-area="" asp-controller="ApplicationUsers" asp-action="Index">Потребители</a>
+                           }
+                        </li>
                     </ul>
                     
                     <!-- Login and Register buttons here -->
