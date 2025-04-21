@@ -73,9 +73,9 @@ namespace DanAutoPower.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
 
-            [Required]
-            [Display(Name = "Role")]
-            public string Role { get; set; }
+            //[Required]
+            //[Display(Name = "Role")]
+            //public string Role { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -113,7 +113,7 @@ namespace DanAutoPower.Areas.Identity.Pages.Account
                     _logger.LogInformation("User created a new account with password.");
 
                     // Assign user to role
-                    await _userManager.AddToRoleAsync(newUser, Input.Role);
+                    await _userManager.AddToRoleAsync(newUser, "User");
 
                     var userId = await _userManager.GetUserIdAsync(newUser);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(newUser);
