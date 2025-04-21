@@ -5,17 +5,17 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 @{
-    ViewData["Title"] = "Users";
+    ViewData["Title"] = "Потребители";
 }
 
-<h2>Users</h2>
+<h2>Потребители</h2>
 
 <table class="table table-striped">
     <thead>
         <tr>
-            <th>UserName</th>
-            <th>Email</th>
-            <th>Modify</th>
+            <th>Имейл</th>
+            <th>Роля</th>
+            <th>Промяна</th>
             <th></th>
         </tr>
     </thead>
@@ -23,11 +23,11 @@
         @foreach (var user in Model)
         {
             <tr>
-                <td>@user.UserName</td>
                 <td>@user.Email</td>
+                <td>@ViewBag.UserRoles[user.Id]</td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@user.Id">Edit</a> |
-                    <a asp-action="Delete" asp-route-id="@user.Id">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@user.Id">Редактиране</a> |
+                    <a asp-action="Delete" asp-route-id="@user.Id">Изтриване</a>
                 </td>
             </tr>
         }

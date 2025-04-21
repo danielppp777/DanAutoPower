@@ -27,17 +27,18 @@
     <div class="form-group">
         <label for="Fuel">Вид гориво</label>
         <select id="Fuel" name="Fuel" class="form-control" required>
-            <option value="Petrol" selected="@(@Model.Fuel == "Petrol")">Бензин</option>
-            <option value="Diesel" selected="@(@Model.Fuel == "Diesel")">Дизел</option>
-            <option value="Hybrid" selected="@(@Model.Fuel == "Hybrid")">Хибрид</option>
-            <option value="Electric" selected="@(@Model.Fuel == "Electric")">Електрически</option>
-            <option value="LPG" selected="@(@Model.Fuel == "LPG")">Газ</option>
+            <option value="Petrol" selected="@(@Model.Fuel == "Бензин")">Бензин</option>
+            <option value="Diesel" selected="@(@Model.Fuel == "Дизел")">Дизел</option>
+            <option value="Hybrid" selected="@(@Model.Fuel == "Хубрид")">Хибрид</option>
+            <option value="Electric" selected="@(@Model.Fuel == "Ток")">Ток</option>
+            <option value="LPG" selected="@(@Model.Fuel == "Газ")">Газ</option>
         </select>
     </div>
 
     <div class="form-group">
-        <label for="Year">Година на производство</label>
-        <input asp-for="Year" class="form-control" />
+        <label asp-for="Year">Година на производство</label>
+        <input asp-for="Year" class="form-control" maxlength="4"
+               oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0,4);" />
         <span asp-validation-for="Year" class="text-danger"></span>
     </div>
 
@@ -49,7 +50,7 @@
 
     <div class="form-group">
         <label asp-for="Price">Цена</label>
-        <input asp-for="Price" class="form-control" />
+        <input asp-for="Price" class="form-control" value="@Math.Round(Model.Price, 0)" />
         <span asp-validation-for="Price" class="text-danger"></span>
     </div>
 

@@ -9,6 +9,7 @@ namespace DanAutoPower.Controllers
     using Microsoft.EntityFrameworkCore;
     using DanAutoPower.Data;
     using DanAutoPower.Models;
+    using Microsoft.AspNetCore.Authorization;
 
     public class ServicesController : Controller
     {
@@ -38,12 +39,14 @@ namespace DanAutoPower.Controllers
         }
 
         // 🟢 GET: Services/Create (Форма за създаване на услуга)
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
         }
 
         // 🔵 POST: Services/Create (Записване в базата)
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Description,Price")] Service service)
@@ -58,6 +61,7 @@ namespace DanAutoPower.Controllers
         }
 
         // 🟠 GET: Services/Edit/5 (Форма за редактиране)
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
@@ -71,6 +75,7 @@ namespace DanAutoPower.Controllers
         // 🔵 POST: Services/Edit/5 (Записване на редактираните данни)
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Price")] Service service)
         {
             if (id != service.Id) return NotFound();
@@ -85,6 +90,7 @@ namespace DanAutoPower.Controllers
         }
 
         // 🔴 GET: Services/Delete/5 (Форма за потвърждение на изтриването)
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
@@ -98,6 +104,7 @@ namespace DanAutoPower.Controllers
         // 🔴 POST: Services/Delete/5 (Изтриване на услуга)
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var service = await _context.Services.FindAsync(id);

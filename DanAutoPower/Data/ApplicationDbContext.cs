@@ -16,20 +16,25 @@ namespace DanAutoPower.Data
         public DbSet<Service> Services { get; set; }
 
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    base.OnModelCreating(modelBuilder);
 
-        //    modelBuilder.Entity<Car>()
-        //        .Property(c => c.Price)
-        //        .HasPrecision(18, 2);
+        //    modelBuilder.Entity<ApplicationUser>()
+        //        .Property(u => u.Role)
+        //        .HasMaxLength(256); // Optional: Set a max length
+                                    
+        //    //    modelBuilder.Entity<Car>()                                  
+        //    //        .Property(c => c.Price)
+        //    //        .HasPrecision(18, 2);
 
-        //    modelBuilder.Entity<Car>()
-        //        .HasOne(c => c.User)
-        //        .WithMany()
-        //        .HasForeignKey(c => c.UserId)
-        //        .OnDelete(DeleteBehavior.Cascade);
-        }
+        //    //    modelBuilder.Entity<Car>()
+        //    //        .HasOne(c => c.User)
+        //    //        .WithMany()
+        //    //        .HasForeignKey(c => c.UserId)
+        //    //        .OnDelete(DeleteBehavior.Cascade);
+        //    //        .OnDelete(DeleteBehavior.Cascade);
+        //}
 
     }
 }

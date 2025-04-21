@@ -28,14 +28,17 @@
             <option value="Diesel">Дизел</option>
             <option value="Hybrid">Хибрид</option>
             <option value="Electric">Ток</option>
-            <option value="LPG">LPG (Втечнен пропан бутан)</option>
+            <option value="Газ">Газ</option>
         </select>
     </div>
 
     <div class="form-group">
         <label asp-for="Year">Година на производство</label>
-        <input asp-for="Year" class="form-control" />
+        <input asp-for="Year" class="form-control" maxlength="4"
+               oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0,4);" />
+        <span asp-validation-for="Year" class="text-danger"></span>
     </div>
+
 
     <div class="form-group">
         <label asp-for="Mileage">Пробег (км)</label>

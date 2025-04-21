@@ -32,10 +32,32 @@
             <tr>
                 <td>@car.Make</td>
                 <td>@car.Model</td>
-                <td>@car.Fuel</td>
+                <td>
+                    @switch (car.Fuel)
+                    {
+                        case "Petrol":
+                            @:Бензин
+                            break;
+                        case "Diesel":
+                            @:Дизел
+                            break;
+                        case "Hybrid":
+                            @:Хибрид
+                            break;
+                        case "Electric":
+                            @:Ток
+                            break;
+                        case "Gas":
+                            @:Газ
+                            break;
+                        default:
+                            @:Неизвестно
+                            break;
+                    }
+                </td>
                 <td>@car.Year</td>
-                <td>@car.Mileage km</td>
-                <td>@car.Price.ToString("C")</td>
+                <td>@car.Mileage.ToString("N0") км</td>
+                <td>@car.Price.ToString("C0")</td>
                 <td>
                     @if (!string.IsNullOrEmpty(car.ImageUrl))
                     {
