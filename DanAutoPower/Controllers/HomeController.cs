@@ -1,44 +1,27 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using DanAutoPower.Models; // добави това, за да можеш да използваш моделите
-using System.Collections.Generic;
-using SQLitePCL;
+using DanAutoPower.Models;
+using DanAutoPower.Data;
+using System.Linq;
 
 namespace DanAutoPower.Controllers
 {
     public class HomeController : Controller
     {
-        // GET: Home/Index
-        public IActionResult Index()
+        private readonly ApplicationDbContext _context;
 
+        public HomeController(ApplicationDbContext context)
         {
-            // Създаваме примерни данни за автомобили, за да ги покажем в изгледа
-            //var cars = new List<Car>
-            //{ 
-            //    new Car { Brand = "BMW", Model = "X5", Year = 2022, Price = 55000, ImageUrl = "/images/resizer.jpg " },
-            //    new Car { Brand = "Mercedes", Model = "GLE", Year = 2021, Price = 65000, ImageUrl = "/images/mercedes_gle.jpg" },
-            //    new Car { Brand = "Audi", Model = "Q7", Year = 2020, Price = 58000, ImageUrl = "/images/audi_q7.jpg" }
-            //};
-
-            return View(); // Изпращаме данните към изгледа
+            _context = context;
         }
 
-        // POST: Home/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("Id,Brand,Model,Year,Price,ImageUrl")] Car car)
+        public IActionResult Index()
         {
-            if (ModelState.IsValid)
-            {
-                // Тук ще добавиш логиката за добавяне на колата към базата данни
-                // В момента просто показваме, че данните се приемат
-                return RedirectToAction(nameof(Index)); // Пренасочваме към списъка с автомобили
-            }
+            var recentCars = _context.Cars
+                .OrderByDescending(c => c.Id)
+                .Take(9)
+                .ToList();
 
-            return View(car); // Ако има грешка, връщаме обратно към формата за създаване
-
-
-
-
+            return View(recentCars);
         }
     }
 }

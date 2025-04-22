@@ -2,85 +2,178 @@
 
 @{
     ViewData["Title"] = "Car Listings";
+    var searchMake = Context.Request.Query["make"];
+    var searchModel = Context.Request.Query["model"];
+    var searchFuel = Context.Request.Query["fuel"];
+    var minMileage = string.IsNullOrEmpty(Context.Request.Query["minMileage"]) ? 0 : int.Parse(Context.Request.Query["minMileage"]);
+    var maxMileage = string.IsNullOrEmpty(Context.Request.Query["maxMileage"]) ? 500000 : int.Parse(Context.Request.Query["maxMileage"]);
 }
 
-<h2>Car Listings</h2>
-
-@if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
-{
-    <p>
-        <a asp-action="Create" class="btn btn-success">+ Add New Car</a>
-    </p>
-}
-
-<table class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th>Марка</th>
-            <th>Модел</th>
-            <th>Вид гориво</th>
-            <th>Година на производство</th>
-            <th>Пробег</th>
-            <th>Цена</th>
-            <th>Снимка</th>
-            <th style="width: 140px;">Действия</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var car in Model)
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-primary mb-0">Обяви за коли</h2>
+        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
         {
-            <tr>
-                <td>@car.Make</td>
-                <td>@car.Model</td>
-                <td>
-                    @switch (car.Fuel)
-                    {
-                        case "Petrol":
-                            @:Бензин
-                            break;
-                        case "Diesel":
-                            @:Дизел
-                            break;
-                        case "Hybrid":
-                            @:Хибрид
-                            break;
-                        case "Electric":
-                            @:Ток
-                            break;
-                        case "Gas":
-                            @:Газ
-                            break;
-                        default:
-                            @:Неизвестно
-                            break;
-                    }
-                </td>
-                <td>@car.Year</td>
-                <td>@car.Mileage.ToString("N0") км</td>
-                <td>@car.Price.ToString("C0")</td>
-                <td>
-                    @if (!string.IsNullOrEmpty(car.ImageUrl))
-                    {
-                        <img src="@car.ImageUrl" style="height: 50px;" />
-                    }
-                    else
-                    {
-                        <span>Няма снимка</span>
-                    }
-                </td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@car.Id" class="btn btn-sm btn-info">Детайли</a>
-                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
-                    {
-                        <a asp-action="Edit" asp-route-id="@car.Id" class="btn btn-sm btn-warning">Редакция</a>
-                    }
-                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
-                    {
-                        <a asp-action="Delete" asp-route-id="@car.Id" class="btn btn-sm btn-danger">Изтрий</a>
-                    }
-                   
-                </td>
-            </tr>
+            <a asp-action="Create" class="btn btn-success">
+                + Добави нова кола
+            </a>
         }
-    </tbody>
-</table>
+    </div>
+
+    <!-- Search Bar -->
+    <form method="get" class="mb-4">
+        <div class="row g-2 align-items-end">
+            <div class="col-md-3">
+                <label for="makeDropdown" class="form-label">Марка</label>
+                <select class="form-select" name="make" id="makeDropdown">
+                    <option value="">Зареждане...</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="model" class="form-label">Модел</label>
+                <input type="text" class="form-control" name="model" id="model" value="@searchModel" placeholder="Въведи тук..." />
+            </div>
+            <div class="col-md-3">
+                <label for="fuel" class="form-label">Гориво</label>
+                <select class="form-select" name="fuel" id="fuel">
+                    <option value="">-- Всички --</option>
+                    <option value="Petrol" selected="@(searchFuel == "Petrol" ? "selected" : null)">Бензин</option>
+                    <option value="Diesel" selected="@(searchFuel == "Diesel" ? "selected" : null)">Дизел</option>
+                    <option value="Hybrid" selected="@(searchFuel == "Hybrid" ? "selected" : null)">Хибрид</option>
+                    <option value="Electric" selected="@(searchFuel == "Electric" ? "selected" : null)">Ток</option>
+                    <option value="Gas" selected="@(searchFuel == "Gas" ? "selected" : null)">Газ</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Пробег (км)</label>
+
+                <!-- Sliders -->
+                <div class="d-flex align-items-center mb-2">
+                    <input type="range" class="form-range me-2" min="0" max="500000" step="1000" id="minMileage" name="minMileage" value="@minMileage" oninput="syncMileageInputs()" />
+                    <input type="range" class="form-range ms-2" min="0" max="500000" step="1000" id="maxMileage" name="maxMileage" value="@maxMileage" oninput="syncMileageInputs()" />
+                </div>
+
+                <!-- Text Inputs -->
+                <div class="d-flex gap-2">
+                    <div class="input-group">
+                        <span class="input-group-text">Мин.</span>
+                        <input type="number" class="form-control" min="0" max="500000" step="1000" id="minMileageInput" value="@minMileage" onchange="syncMileageSliders()" />
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text">Макс.</span>
+                        <input type="number" class="form-control" min="0" max="500000" step="1000" id="maxMileageInput" value="@maxMileage" onchange="syncMileageSliders()" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mt-2 d-flex gap-2">
+                <a href="@Url.Action("Index", "Cars")" class="btn btn-outline-secondary w-50">Изчисти</a>
+                <button type="submit" class="btn btn-primary w-50">Търси</button>
+            </div>
+
+        </div>
+    </form>
+
+    <div class="row g-4">
+        @foreach (var car in Model
+        .Where(c =>
+        (string.IsNullOrEmpty(searchMake) || c.Make.ToLower().Contains(searchMake.ToString().ToLower())) &&
+        (string.IsNullOrEmpty(searchModel) || c.Model.ToLower().Contains(searchModel.ToString().ToLower())) &&
+        (string.IsNullOrEmpty(searchFuel) || c.Fuel == searchFuel) &&
+        (c.Mileage >= minMileage && c.Mileage <= maxMileage)
+        ))
+        {
+            <div class="col-12">
+                <div class="card shadow-sm p-3 border">
+                    <div class="row g-3 align-items-start">
+                        <div class="col-md-4">
+                            @if (!string.IsNullOrEmpty(car.ImageUrl))
+                            {
+                                <img src="@car.ImageUrl" class="img-fluid rounded" alt="Car image" style="object-fit: cover; height: 200px; width: 100%;" />
+                            }
+                            else
+                            {
+                                <div class="bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                                    <span class="text-muted">Няма снимка</span>
+                                </div>
+                            }
+                        </div>
+                        <div class="col-md-8">
+                            <div class="d-flex justify-content-between">
+                                <h5 class="card-title text-dark">
+                                    @car.Make @car.Model
+                                </h5>
+                                <h4 class="text-danger fw-bold">@car.Price.ToString("N0") лв.</h4>
+                            </div>
+
+                            <div class="mb-2 text-muted small">
+                                <span>@car.Year г.</span> |
+                                <span>@car.Mileage.ToString("N0") км</span> |
+                                <span>
+                                    @{
+                                        var fuelLabel = car.Fuel switch
+                                        {
+                                            "Petrol" => "Бензин",
+                                            "Diesel" => "Дизел",
+                                            "Hybrid" => "Хибрид",
+                                            "Electric" => "Ток",
+                                            "Gas" => "Газ",
+                                            _ => "Неизвестно"
+                                        };
+                                    }
+                                    @fuelLabel
+                                </span>
+                            </div>
+
+                            <div class="d-flex flex-wrap gap-2">
+                                <a asp-action="Details" asp-route-id="@car.Id" class="btn btn-outline-primary btn-sm">Детайли</a>
+                                @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                                {
+                                    <a asp-action="Edit" asp-route-id="@car.Id" class="btn btn-outline-warning btn-sm">Редакция</a>
+                                    <a asp-action="Delete" asp-route-id="@car.Id" class="btn btn-outline-danger btn-sm">Изтрий</a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            const selectedMake = "@searchMake";
+
+            $.get("/api/CarsApi/makes", function (makes) {
+                const dropdown = $('#makeDropdown');
+                dropdown.empty();
+                dropdown.append('<option value="">-- Избери марка --</option>');
+
+                makes.forEach(make => {
+                    const isSelected = make.name === selectedMake ? 'selected' : '';
+                    dropdown.append(`<option value="${make.name}" ${isSelected}>${make.name}</option>`);
+                });
+            });
+
+            syncMileageInputs(); // initial sync
+        });
+
+        function syncMileageInputs() {
+            const min = document.getElementById("minMileage").value;
+            const max = document.getElementById("maxMileage").value;
+
+            document.getElementById("minMileageInput").value = min;
+            document.getElementById("maxMileageInput").value = max;
+        }
+
+        function syncMileageSliders() {
+            const min = document.getElementById("minMileageInput").value;
+            const max = document.getElementById("maxMileageInput").value;
+
+            document.getElementById("minMileage").value = min;
+            document.getElementById("maxMileage").value = max;
+        }
+    </script>
+}

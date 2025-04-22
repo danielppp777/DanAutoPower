@@ -1,80 +1,130 @@
 ﻿@model DanAutoPower.Models.Car
 
 @{
-    ViewData["Title"] = "Edit Car";
+    ViewData["Title"] = "Редакция";
 }
 
-<h2>Редактиране на автомобил</h2>
+<div class="container py-5">
+    <div class="card shadow-lg p-4">
+        <h2 class="text-primary mb-4">Редакция на обява</h2>
 
-<form asp-action="Edit" method="post">
-    <input type="hidden" asp-for="Id" />
+        <form asp-action="Edit">
+            <input type="hidden" asp-for="Id" />
 
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row g-3">
 
-    <div class="form-group">
-        <label>Марка</label>
-        <select id="makeDropdown" name="Make" class="form-control" required>
-            <option selected value="@Model.Make">@Model.Make</option>
-        </select>
+                <!-- Make Dropdown -->
+                <div class="col-md-6">
+                    <label for="makeDropdown" class="form-label">Марка</label>
+                    <select class="form-select" name="Make" id="makeDropdown" required>
+                        <option value="">Зареждане...</option>
+                    </select>
+                    <span asp-validation-for="Make" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Model" class="form-label">Модел</label>
+                    <input asp-for="Model" class="form-control" />
+                    <span asp-validation-for="Model" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Year" class="form-label">Година</label>
+                    <input asp-for="Year" class="form-control" />
+                    <span asp-validation-for="Year" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Fuel" class="form-label">Гориво</label>
+                    <select asp-for="Fuel" class="form-select">
+                        <option value="">-- Избери --</option>
+                        <option value="Petrol">Бензин</option>
+                        <option value="Diesel">Дизел</option>
+                        <option value="Hybrid">Хибрид</option>
+                        <option value="Electric">Ток</option>
+                        <option value="Gas">Газ</option>
+                    </select>
+                    <span asp-validation-for="Fuel" class="text-danger"></span>
+                </div>
+
+                <!-- Mileage with slider + input -->
+                <div class="col-md-12">
+                    <label class="form-label">Пробег (км)</label>
+                    <div class="d-flex align-items-center mb-2">
+                        <input type="range" class="form-range me-2" min="0" max="500000" step="1000" id="mileageSlider" value="0" oninput="syncMileageInput()" />
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text">Км</span>
+                        <input asp-for="Mileage" type="number" class="form-control" id="mileageInput" min="0" max="500000" step="1000" onchange="syncMileageSlider()" />
+                    </div>
+                    <span asp-validation-for="Mileage" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Price" class="form-label">Цена</label>
+                    <input asp-for="Price" class="form-control" />
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="ImageUrl" class="form-label">Снимка (URL)</label>
+                    <input asp-for="ImageUrl" class="form-control" />
+                    <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                </div>
+@* 
+                <div class="col-12">
+                    <label asp-for="Description" class="form-label">Описание</label>
+                    <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div> *@
+            </div>
+
+            <div class="mt-4 d-flex justify-content-between">
+                <a asp-action="Index" class="btn btn-outline-secondary">⬅ Назад</a>
+                <button type="submit" class="btn btn-success">Запази промените</button>
+            </div>
+        </form>
     </div>
-
-    <div class="form-group">
-        <label asp-for="Model">Модел</label>
-        <input asp-for="Model" class="form-control" />
-        <span asp-validation-for="Model" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label for="Fuel">Вид гориво</label>
-        <select id="Fuel" name="Fuel" class="form-control" required>
-            <option value="Petrol" selected="@(@Model.Fuel == "Бензин")">Бензин</option>
-            <option value="Diesel" selected="@(@Model.Fuel == "Дизел")">Дизел</option>
-            <option value="Hybrid" selected="@(@Model.Fuel == "Хубрид")">Хибрид</option>
-            <option value="Electric" selected="@(@Model.Fuel == "Ток")">Ток</option>
-            <option value="LPG" selected="@(@Model.Fuel == "Газ")">Газ</option>
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Year">Година на производство</label>
-        <input asp-for="Year" class="form-control" maxlength="4"
-               oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0,4);" />
-        <span asp-validation-for="Year" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Mileage">Пробег (км)</label>
-        <input asp-for="Mileage" class="form-control" />
-        <span asp-validation-for="Mileage" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Price">Цена</label>
-        <input asp-for="Price" class="form-control" value="@Math.Round(Model.Price, 0)" />
-        <span asp-validation-for="Price" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="ImageUrl">URL на изображението</label>
-        <input asp-for="ImageUrl" class="form-control" />
-        <span asp-validation-for="ImageUrl" class="text-danger"></span>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Запази промените</button>
-</form>
+</div>
 
 @section Scripts {
+    @Html.Partial("_ValidationScriptsPartial")
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        $(document).ready(function () {
-            const currentMake = "@Model.Make";
+        function syncMileageInput() {
+            document.getElementById("mileageInput").value = document.getElementById("mileageSlider").value;
+        }
 
+        function syncMileageSlider() {
+            document.getElementById("mileageSlider").value = document.getElementById("mileageInput").value;
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            // Initial sync
+            syncMileageSlider();
+
+            // Set initial mileage slider value
+            const mileage = document.getElementById("mileageInput").value;
+            if (mileage) {
+                document.getElementById("mileageSlider").value = mileage;
+            }
+
+            // Load car makes from API
             $.get("/api/CarsApi/makes", function (makes) {
-                $('#makeDropdown').empty();
+                const dropdown = $('#makeDropdown');
+                dropdown.empty();
+                dropdown.append('<option value="">-- Избери марка --</option>');
+
                 makes.forEach(make => {
-                    const selected = make.name === currentMake ? "selected" : "";
-                    $('#makeDropdown').append(`<option value="${make.name}" ${selected}>${make.name}</option>`);
+                    dropdown.append(`<option value="${make.name}">${make.name}</option>`);
                 });
+
+                // Restore selected make from model
+                const selectedMake = '@Model.Make';
+                if (selectedMake) {
+                    dropdown.val(selectedMake);
+                }
             });
         });
     </script>

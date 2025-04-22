@@ -1,30 +1,42 @@
 ﻿@model DanAutoPower.Models.Car
 
 @{
-    ViewData["Title"] = "Delete Car";
+    ViewData["Title"] = "Изтриване";
 }
 
-<h2>Изтриване на обява за автомобил</h2>
-<hr />
+<div class="container py-5">
+    <div class="card shadow-lg p-4">
+        <h2 class="text-danger mb-3">Изтриване на обява</h2>
 
-<h4>Сигурни ли сте, че искате да изтриете тази обява?</h4>
+        <div class="alert alert-warning">
+            <strong>Сигурни ли сте, че искате да изтриете тази обява?</strong>
+        </div>
 
-<dl class="row">
-    <dt class="col-sm-2">Марка</dt>
-    <dd class="col-sm-10">@Model.Make</dd>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Марка:</label>
+                <div class="form-control-plaintext">@Model.Make</div>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Модел:</label>
+                <div class="form-control-plaintext">@Model.Model</div>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Година:</label>
+                <div class="form-control-plaintext">@Model.Year</div>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-bold">Цена:</label>
+                <div class="form-control-plaintext text-danger fw-bold">@Model.Price.ToString("N0") лв.</div>
+            </div>
+        </div>
 
-    <dt class="col-sm-2">Модел</dt>
-    <dd class="col-sm-10">@Model.Model</dd>
-
-    <dt class="col-sm-2">Година на производство</dt>
-    <dd class="col-sm-10">@Model.Year</dd>
-
-    <dt class="col-sm-2">Цена</dt>
-    <dd class="col-sm-10">@Model.Price.ToString("C")</dd>
-</dl>
-
-<form asp-action="Delete">
-    <input type="hidden" asp-for="Id" />
-    <button type="submit" class="btn btn-danger">Изтрий</button>
-    <a asp-action="Index" class="btn btn-secondary">Отказ</a>
-</form>
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="Id" />
+            <div class="d-flex gap-3">
+                <button type="submit" class="btn btn-danger">🗑️ Изтрий</button>
+                <a asp-action="Index" class="btn btn-outline-secondary">⬅ Отказ</a>
+            </div>
+        </form>
+    </div>
+</div>

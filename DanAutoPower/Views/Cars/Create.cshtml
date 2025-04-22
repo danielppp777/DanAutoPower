@@ -1,69 +1,109 @@
 ﻿@model DanAutoPower.Models.Car
 
 @{
-    ViewData["Title"] = "Create Car";
+    ViewData["Title"] = "Добави нова кола";
 }
 
-<h2>Добави нова обява</h2>
+<div class="container py-5">
+    <div class="card shadow-lg p-4">
+        <h2 class="text-primary mb-4">Добави нова обява</h2>
 
-<form asp-action="Create" method="post">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <form asp-action="Create">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label for="makeDropdown" class="form-label">Марка</label>
+                    <select id="makeDropdown" name="Make" class="form-select" required></select>
+                    <span asp-validation-for="Make" class="text-danger"></span>
+                </div>
 
-    <div class="form-group">
-        <label>Марка</label>
-        <select id="makeDropdown" name="Make" class="form-control" required></select>
+                <div class="col-md-6">
+                    <label asp-for="Model" class="form-label">Модел</label>
+                    <input asp-for="Model" class="form-control" />
+                    <span asp-validation-for="Model" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Year" class="form-label">Година</label>
+                    <input asp-for="Year" class="form-control" />
+                    <span asp-validation-for="Year" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Fuel" class="form-label">Гориво</label>
+                    <select asp-for="Fuel" class="form-select">
+                        <option value="">-- Избери --</option>
+                        <option value="Petrol">Бензин</option>
+                        <option value="Diesel">Дизел</option>
+                        <option value="Hybrid">Хибрид</option>
+                        <option value="Electric">Ток</option>
+                        <option value="Gas">Газ</option>
+                    </select>
+                    <span asp-validation-for="Fuel" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-12">
+                    <label class="form-label">Пробег (км)</label>
+                    <div class="d-flex align-items-center mb-2">
+                        <input type="range" class="form-range me-2" min="0" max="500000" step="1000" id="mileageSlider" value="0" oninput="syncMileageInput()" />
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text">Км</span>
+                        <input asp-for="Mileage" type="number" class="form-control" id="mileageInput" min="0" max="500000" step="1000" onchange="syncMileageSlider()" />
+                    </div>
+                    <span asp-validation-for="Mileage" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Price" class="form-label">Цена</label>
+                    <input asp-for="Price" class="form-control" />
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="ImageUrl" class="form-label">Снимка (URL)</label>
+                    <input asp-for="ImageUrl" class="form-control" />
+                    <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                </div>
+
+                @* <div class="col-12">
+                    <label asp-for="Description" class="form-label">Описание</label>
+                    <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div> *@
+            </div>
+
+            <div class="mt-4 d-flex justify-content-between">
+                <a asp-action="Index" class="btn btn-outline-secondary">⬅ Назад</a>
+                <button type="submit" class="btn btn-success">Добави</button>
+            </div>
+        </form>
     </div>
-
-    <div class="form-group">
-        <label asp-for="Model">Модел</label>
-        <input asp-for="Model" class="form-control" />
-        <span asp-validation-for="Model" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label>Вид гориво</label>
-        <select id="Fuel" name="Fuel" class="form-control" required>
-            <option value="">Избери гориво</option>
-            <option value="Petrol">Бензинl</option>
-            <option value="Diesel">Дизел</option>
-            <option value="Hybrid">Хибрид</option>
-            <option value="Electric">Ток</option>
-            <option value="Газ">Газ</option>
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Year">Година на производство</label>
-        <input asp-for="Year" class="form-control" maxlength="4"
-               oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0,4);" />
-        <span asp-validation-for="Year" class="text-danger"></span>
-    </div>
-
-
-    <div class="form-group">
-        <label asp-for="Mileage">Пробег (км)</label>
-        <input asp-for="Mileage" class="form-control" />
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Price">Цена (лв)</label>
-        <input asp-for="Price" class="form-control" />
-    </div>
-
-    <div class="form-group">
-        <label asp-for="ImageUrl"></label>
-        <input asp-for="ImageUrl" class="form-control" />
-    </div>
-
-    <button type="submit" class="btn btn-primary">Добави</button>
-</form>
+</div>
 
 @section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        function syncMileageInput() {
+            document.getElementById("mileageInput").value = document.getElementById("mileageSlider").value;
+        }
+
+        function syncMileageSlider() {
+            document.getElementById("mileageSlider").value = document.getElementById("mileageInput").value;
+        }
+
+        // Sync on load
+        document.addEventListener("DOMContentLoaded", function () {
+            syncMileageSlider();
+        });
+    </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function () {
             $.get("/api/CarsApi/makes", function (makes) {
-                $('#makeDropdown').append('<option value="">Select Make</option>');
+                $('#makeDropdown').append('<option value="">Избери марка</option>');
                 makes.forEach(make => {
                     $('#makeDropdown').append(`<option value="${make.name}">${make.name}</option>`);
                 });

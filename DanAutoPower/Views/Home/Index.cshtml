@@ -1,128 +1,161 @@
-﻿@{  
-   ViewData["Title"] = "Начална Страница";  
-}  
+﻿@model List<DanAutoPower.Models.Car>
 
-<!-- Bootstrap 5 и персонализиран стил -->  
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">  
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">  
+@{
+    ViewData["Title"] = "Начална Страница";
+}
 
-<div class="container mt-5">  
-   <h1 class="text-center fw-bold mb-3" style="font-family: 'Poppins', sans-serif;">Добре дошли в DanAutoPower!</h1>  
-   <p class="text-center text-muted mb-5" style="font-family: 'Poppins', sans-serif;">Вашето удобно място за търсене на автомобили.</p>  
+<!-- Bootstrap 5 и персонализиран стил -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
-   <h2 class="mt-5 mb-4" style="font-family: 'Poppins', sans-serif;">🚗 Най-новите обяви за автомобили</h2>  
+<div class="container mt-5">
+    <h1 class="text-center fw-bold mb-3" style="font-family: 'Poppins', sans-serif;">Добре дошли в DanAutoPower!</h1>
+    <p class="text-center text-muted mb-5" style="font-family: 'Poppins', sans-serif;">Вашето удобно място за търсене на автомобили.</p>
 
-   <div class="row">  
-      @*  @foreach (var car in Model)  
-       {  
-           <div class="col-md-4 mb-4">  
-               <div class="card shadow-lg border-0 rounded-4 overflow-hidden car-card">  
-                   <img src="@car.ImageUrl" class="card-img-top" alt="@car.Brand @car.Model">  
-                   <div class="card-body p-4">  
-                       <div class="card-text-container">  
-                           <h5 class="card-title fs-5 fw-bold text-primary" style="font-family: 'Poppins', sans-serif;">@car.Brand @car.Model</h5>  
-                           <p class="card-text" style="font-family: 'Poppins', sans-serif;"><strong>Година:</strong> @car.Year</p>  
-                           <p class="card-text" style="font-family: 'Poppins', sans-serif;"><strong>Цена:</strong> @car.Price лв</p>  
-                       </div>  
-                       <!-- Hidden button by default, shown on hover -->  
-                       <a href="/Cars/Details/@car.Id" class="btn btn-primary w-100 py-2 car-btn" style="font-family: 'Poppins', sans-serif;">🔍 Преглед</a>  
-                   </div>  
-               </div>  
-           </div>  
-       }   *@
-   </div>  
-</div>  
+    <h2 class="mt-5 mb-4" style="font-family: 'Poppins', sans-serif;">🚗 Най-новите обяви за автомобили</h2>
 
-<style>  
-   /* Основни стилове */  
-body {  
-   background-color: #f4f8fb;  
-}  
+    <div class="row">
+        @foreach (var car in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-lg border-0 rounded-4 overflow-hidden car-card">
+                    <img src="@car.ImageUrl" class="card-img-top" alt="@car.Make @car.Model">
+                    <div class="card-body p-4">
+                        <div class="card-text-container">
+                            <h5 class="card-title fs-5 fw-bold text-primary" style="font-family: 'Poppins', sans-serif;">@car.Make @car.Model</h5>
 
-.card {  
-   border-radius: 15px;  
-   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);  
-   transition: transform 0.3s ease, box-shadow 0.3s ease;  
-   position: relative;  
-   overflow: hidden;  
-}  
+                            <hr class="card-divider" />
 
-.card:hover {  
-   transform: scale(1.05);  
-   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);  
-}  
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="card-text" style="font-family: 'Poppins', sans-serif;"><strong>Година:</strong> @car.Year</span>
+                                <span class="card-text text-end" style="font-family: 'Poppins', sans-serif;"><strong>Цена:</strong> @car.Price.ToString("C0")</span>
+                            </div>
+                        </div>
+                        <a href="/Cars/Details/@car.Id" class="btn btn-primary w-100 py-2 car-btn" style="font-family: 'Poppins', sans-serif;">🔍 Преглед</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
 
-.btn-primary {  
-   background-color: #007bff;  
-   border-radius: 10px;  
-   border: none;  
-   transition: background-color 0.3s ease, transform 0.2s ease;  
-   position: absolute;  
-   bottom: 0;  
-   left: 0;  
-   width: 100%;  
-   opacity: 0;  
-   pointer-events: none; /* Prevent interaction when hidden */  
-   transform: translateY(100%); /* Button starts below the card */  
-   transition: opacity 0.3s ease, transform 0.3s ease;  
-}  
+<style>
+    body {
+        background-color: #f4f8fb;
+    }
 
-.btn-primary:hover {  
-   background-color: #0056b3;  
-   transform: translateY(-3px);  
-}  
+    .card {
+        border-radius: 15px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
 
-.card-img-top {  
-   height: 200px;  
-   object-fit: cover;  
-}  
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
 
-/* Show the button on hover, coming from the bottom */  
-.car-card:hover .btn-primary {  
-   opacity: 1;  
-   pointer-events: auto;  
-   transform: translateY(0); /* Move the button to its place */  
-}  
+    /* Overlay blur and dim effect on image */
+    .car-card {
+        position: relative;
+        overflow: hidden;
+    }
 
-/* Styling for the text container inside the card */  
-.card-body {  
-   position: relative;  
-   padding: 1.5rem;  
-   display: flex;  
-   flex-direction: column;  
-   justify-content: flex-end;  
-   height: 100%;  
-}  
+        .car-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 200px;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(3px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1;
+        }
 
-/* Smooth transition for the text moving up and down */  
-.car-card .card-text-container {  
-   transform: translateY(0); /* Initial position of text */  
-   transition: transform 0.3s ease-in-out; /* Smooth transition when hover out */  
-}  
+        .car-card:hover::before {
+            opacity: 1;
+        }
 
-/* On hover, move the text upwards */  
-.car-card:hover .card-text-container {  
-   transform: translateY(-50px); /* Moves the text upwards when hovering */  
-   transition: transform 0.3s ease-in-out; /* Smooth transition */  
-}  
+    .btn-primary {
+        background-color: #007bff;
+        border-radius: 10px;
+        border: none;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(100%);
+        transition: opacity 0.3s ease, transform 0.3s ease;
+    }
 
-/* Card title and text */  
-.card-title {  
-   font-family: 'Poppins', sans-serif;  
-}  
+        .btn-primary:hover {
+            background-color: #0056b3;
+            transform: translateY(-3px);
+        }
 
-.card-text {  
-   font-family: 'Poppins', sans-serif;  
-}  
+    .car-card:hover .btn-primary {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(0);
+    }
 
-/* Small fix for the card size when in smaller screens */  
-media (max-width: 768px) {  
-   .card {  
-       margin-bottom: 15px;  
-   }  
-}  
+    .card-img-top {
+        height: 200px;
+        object-fit: cover;
+        transition: filter 0.3s ease;
+    }
 
-</style>  
+    .card-body {
+        position: relative;
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        height: 100%;
+    }
 
-<!-- Bootstrap Icons -->  
+    .card-text-container {
+        transform: translateY(0);
+        transition: transform 0.3s ease-in-out;
+        position: relative;
+        z-index: 2;
+    }
+
+    .car-card:hover .card-text-container {
+        transform: translateY(-50px);
+    }
+
+    .card-title {
+        font-family: 'Poppins', sans-serif;
+        transition: color 0.3s ease;
+    }
+
+    .car-card:hover .card-title {
+        color: white !important;
+    }
+
+    .card-text {
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .card-divider {
+        border: none;
+        border-top: 1px solid grey;
+        margin: 0.5rem 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .car-card:hover .card-divider {
+        opacity: 0;
+    }
+</style>
+
+<!-- Bootstrap Icons -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">

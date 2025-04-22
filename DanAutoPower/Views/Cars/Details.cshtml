@@ -1,70 +1,64 @@
 ﻿@model DanAutoPower.Models.Car
 
 @{
-    ViewData["Title"] = "Car Details";
+    ViewData["Title"] = "Детайли";
 }
 
-<h2>Детайли за автомобил</h2>
-<hr />
+<div class="container py-5">
+    <div class="card shadow-lg border-0">
+        <div class="row g-0">
+            <!-- Car Image -->
+            <div class="col-md-6">
+                @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                {
+                    <img src="@Model.ImageUrl" class="img-fluid rounded-start w-100 h-100 object-fit-cover" alt="Car image" />
+                }
+                else
+                {
+                    <div class="d-flex align-items-center justify-content-center bg-light h-100 text-muted" style="height: 100%;">
+                        <span>Няма снимка</span>
+                    </div>
+                }
+            </div>
 
-<dl class="row">
-    <dt class="col-sm-2">Марка</dt>
-    <dd class="col-sm-10">@Model.Make</dd>
+            <!-- Car Details -->
+            <div class="col-md-6 p-4">
+                <h2 class="text-primary mb-3">@Model.Make @Model.Model</h2>
+                <h4 class="text-danger fw-bold">@Model.Price.ToString("N0") лв.</h4>
 
-    <dt class="col-sm-2">Модел</dt>
-    <dd class="col-sm-10">@Model.Model</dd>
+                <div class="mb-4">
+                    <p><strong>Година:</strong> @Model.Year г.</p>
+                    <p><strong>Пробег:</strong> @Model.Mileage.ToString("N0") км</p>
+                    <p>
+                        <strong>Гориво:</strong>
+                        @{
+                            var fuelLabel = Model.Fuel switch
+                            {
+                                "Petrol" => "Бензин",
+                                "Diesel" => "Дизел",
+                                "Hybrid" => "Хибрид",
+                                "Electric" => "Ток",
+                                "Gas" => "Газ",
+                                _ => "Неизвестно"
+                            };
+                        }
+                        @fuelLabel
+                    </p>
+                    <p><strong>Описание:</strong></p>
+                    @* <p>@Model.Description</p> *@
+                </div>
 
-    <dt class="col-sm-2">Вид гориво</dt>
-    <dd class="col-sm-10">
-        @switch (Model.Fuel)
-        {
-            case "Petrol":
-                @:Бензин
-                break;
-            case "Diesel":
-                @:Дизел
-                break;
-            case "Hybrid":
-                @:Хибрид
-                break;
-            case "Electric":
-                @:Ток
-                break;
-            case "Gas":
-                @:Газ
-                break;
-            default:
-                @:Неизвестно
-                break;
-        }
-    </dd>
+                <!-- Action Buttons -->
+                <div class="d-flex gap-3">
+                    <a asp-action="Index" class="btn btn-outline-secondary">⬅ Назад</a>
 
-    <dt class="col-sm-2">Година на производство</dt>
-    <dd class="col-sm-10">@Model.Year</dd>
-
-    <dt class="col-sm-2">Пробег</dt>
-    <dd class="col-sm-10">@Model.Mileage.ToString("N0") км</dd>
-
-    <dt class="col-sm-2">Цена</dt>
-    <dd class="col-sm-10">@Model.Price.ToString("C0")</dd>
-
-    <dt class="col-sm-2">Снимка</dt>
-    <dd class="col-sm-10">
-        @if (!string.IsNullOrEmpty(Model.ImageUrl))
-        {
-            <img src="@Model.ImageUrl" alt="Снимка на автомобила" style="max-height: 200px;" />
-        }
-        else
-        {
-            <span>Няма предоставена снимка</span>
-        }
-    </dd>
-</dl>
-
-<div>
-    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
-    {
-        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-sm btn-warning">Редактирай</a>
-    }
-    <a asp-action="Index" class="btn btn-secondary">Обратно към списъка</a>
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Редакция</a>
+                        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Изтрий</a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
