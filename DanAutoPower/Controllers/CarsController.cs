@@ -24,6 +24,7 @@ namespace DanAutoPower.Controllers
             return View(cars);
         }
 
+
         // GET: Cars/Details/5
         public async Task<IActionResult> Details(int? id)
         {

@@ -12,6 +12,7 @@ namespace DanAutoPower.Data
 
         }
 
+        public DbSet<TestDrive> TestDrives { get; set; }
         public DbSet<Car> Cars { get; set; }
         public DbSet<Service> Services { get; set; }
 

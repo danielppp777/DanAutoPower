@@ -116,5 +116,4 @@ namespace DanAutoPower.Controllers
             return RedirectToAction(nameof(Index));
         }
     }
-
 }

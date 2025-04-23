@@ -40,8 +40,10 @@
     </div>
 
     <div class="form-group">
-        <input type="submit" value="Запази" class="btn btn-primary me-2" />
-        <a asp-action="Index" class="btn btn-secondary">Отказ</a>
+        <div class="form-group d-flex gap-2">
+            <button type="submit" class="btn btn-success">Запази промените</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">⬅ Отказ</a>
+        </div>
     </div>
 </form>
 

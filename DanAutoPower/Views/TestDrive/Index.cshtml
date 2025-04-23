@@ -1,14 +1,120 @@
-﻿<!-- Bootstrap 5 и персонализиран стил -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+﻿@model IEnumerable<DanAutoPower.Models.TestDrive>
 
 @{
-    ViewData["Title"] = "Test Drive";
+    ViewData["Title"] = "Тест драйв заявки";
 }
 
-<div class="container mt-5 text-center">
-    <h1>🚗 Запиши се за тест драйв!</h1>
-    <p class="text-muted">Изберете автомобил и запазете тест драйв при нас.</p>
+<div class="container py-5">
+    <h2 class="text-primary mb-4">Заявки за тест драйв</h2>
 
-    <a href="/Cars" class="btn btn-primary mt-3">⬅ Обратно към автомобилите</a>
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    <!-- Test Drive Booking Section -->
+    <div class="mb-4">
+        <h4>Заяви тест драйв:</h4>
+
+        <form id="testDriveForm">
+            <div class="mb-3">
+                <label for="carSelect" class="form-label">Изберете автомобил</label>
+                <select class="form-select" name="CarId" id="carSelect" required>
+                    <option value="">-- Изберете автомобил --</option>
+                    @foreach (var car in ViewBag.Cars as List<DanAutoPower.Models.Car>)
+                    {
+                        <option value="@car.Id">@car.Make @car.Model</option>
+                    }
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="testDriveDate" class="form-label">Изберете дата и час</label>
+                <input type="datetime-local" class="form-control" name="Date" id="testDriveDate" required />
+            </div>
+
+            <button type="submit" class="btn btn-success">Потвърди заявката</button>
+        </form>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">Няма направени заявки за тест драйв.</div>
+    }
+    else
+    {
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Автомобил</th>
+                    <th>Марка</th>
+                    <th>Модел</th>
+                    <th>Дата и час</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var drive in Model)
+                {
+                    <tr>
+                        <td>@drive.Car.Make @drive.Car.Model</td>
+                        <td>@drive.Car.Make</td>
+                        <td>@drive.Car.Model</td>
+                        <td>@drive.Date.ToString("dd.MM.yyyy HH:mm")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
 </div>
+
+@section Scripts {
+    <script>
+        // Handle the form submission via AJAX
+                      document.getElementById("testDriveForm").addEventListener("submit", function (e) {
+            e.preventDefault(); // Prevent default form submission
+
+            const formData = new FormData(this); // Get form data
+
+            // Send form data via AJAX
+            fetch("/TestDrive/Create", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => {
+                const msgBox = document.getElementById("testDriveResponse");
+
+                // Handle success or error
+                if (response.ok) {
+                    msgBox.innerHTML = `<div class="alert alert-success">✅ Успешно заявихте тест драйв!</div>`;
+                } else {
+                    msgBox.innerHTML = `<div class="alert alert-danger">⚠️ Възникна грешка при заявката.</div>`;
+                }
+
+                // Show the message box
+                msgBox.style.display = "block";
+                msgBox.scrollIntoView({ behavior: "smooth" });
+
+                // Close the modal after submitting
+                const modal = bootstrap.Modal.getInstance(document.getElementById("testDriveModal"));
+                modal.hide();
+            })
+            .catch(error => {
+                // Log any errors from the AJAX request
+                console.error('Error:', error);
+
+                // Show error message
+                const msgBox = document.getElementById("testDriveResponse");
+                msgBox.innerHTML = `<div class="alert alert-danger">⚠️ Възникна грешка при заявката.</div>`;
+                msgBox.style.display = "block";
+            });
+        });
+
+
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+}
